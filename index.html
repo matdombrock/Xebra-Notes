@@ -72,9 +72,9 @@
                     <div class="note-title">
                         <span v-if="element.title">{{ element.title.length < 36 ? element.title : element.title.substring(0,36) + "..."}}</span>
                         <span v-else="element.title">...</span>
-                        <span style="float:right" class="hover-icon" @click="deleteNote('todo',index)"><i class="far fa-trash-alt"></i></span>
+                        <span style="float:right" class="hover-icon" @click="deleteNote('ideas',index)"><i class="far fa-trash-alt"></i></span>
                         <span style="float:right; width:1rem; height:1em;"> </span>
-                        <span style="float:right" class="hover-icon" @click="editNote('todo',index)"><i class="fas fa-edit"></i></i></span>
+                        <span style="float:right" class="hover-icon" @click="editNote('ideas',index)"><i class="fas fa-edit"></i></i></span>
                         <span v-if="element.link!=null && element.link!=''">
                             <span style="float:right; width:1rem; height:1em;"> </span>
                             <a :href="element.link" target="blank" style="float:right;" class="hover-icon"><i class="fas fa-link"></i></a>
@@ -95,9 +95,14 @@
         </div>
         <br>
         <div class="btn-group" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-primary">Misc</button>
-            <button type="button" class="btn btn-secondary">Todo</button>
-            <button type="button" class="btn btn-secondary">Ideas</button>
+            <button v-if="state.currentNote.category == 'misc'" type="button" class="btn btn-primary" @click="switchNoteGroup('misc')">Misc</button>
+            <button v-if="state.currentNote.category != 'misc'" type="button" class="btn btn-secondary" @click="switchNoteGroup('misc')">Misc</button>
+
+            <button v-if="state.currentNote.category == 'todo'" type="button" class="btn btn-primary" @click="switchNoteGroup('todo')">Todo</button>
+            <button v-if="state.currentNote.category != 'todo'" type="button" class="btn btn-secondary" @click="switchNoteGroup('todo')">Todo</button>
+
+            <button v-if="state.currentNote.category == 'ideas'" type="button" class="btn btn-primary" @click="switchNoteGroup('ideas')">Ideas</button>
+            <button v-if="state.currentNote.category != 'ideas'" type="button" class="btn btn-secondary" @click="switchNoteGroup('ideas')">Ideas</button>
         </div>
         <br><br>
         <textarea v-model="notes[state.currentNote.category][state.currentNote.index].content" class="custom-input-content"></textarea>
@@ -110,7 +115,7 @@
             <i class="fas fa-link" style="font-size:2rem; padding-top:0.6rem; ">
             </i>
         </span>
-        <input type="text"  v-model="notes[state.currentNote.category][state.currentNote.index].link" class="custom-input-link" style="float:right" placeholder="https://">
+        <input type="text"  v-model="notes[state.currentNote.category][state.currentNote.index].link" class="custom-input-link" id="custom-input-link" style="float:right" placeholder="https://">
     </div>
 </div>
 
@@ -243,7 +248,11 @@ applause in the lecture-room, [...]
         } 
     },
     methods:{
-        deleteNote: function(category, index){
+        deleteNote: function(category, index, auto){
+            if(auto==true){
+                this.notes[category].splice(index,1);
+                return;
+            }
             if (confirm('Are you sure you want to delete this note?')) {
                 this.notes[category].splice(index,1);
             } else {
@@ -277,11 +286,24 @@ applause in the lecture-room, [...]
             if(this.notes[this.state.currentNote.category][this.state.currentNote.index].link==null || this.notes[this.state.currentNote.category][this.state.currentNote.index].link=="")
             {
                 this.notes[this.state.currentNote.category][this.state.currentNote.index].link = "https://";
+                document.getElementById("custom-input-link").focus();
             }
             else
             {
                 this.notes[this.state.currentNote.category][this.state.currentNote.index].link = "";
             }
+        },
+        switchNoteGroup: function(category){
+            console.log("switch note group to "+category);
+            //cache note
+            var noteCache = this.notes[this.state.currentNote.category][this.state.currentNote.index];
+            //delete note
+            this.deleteNote(this.state.currentNote.category, this.state.currentNote.index, true);
+            //add to new category
+            this.notes[category].unshift(noteCache);
+            //assign new note as current note
+            this.state.currentNote.category = category;
+            this.state.currentNote.index = 0;
         },
         test: function(){
             alert();   
@@ -311,8 +333,20 @@ applause in the lecture-room, [...]
     a{
         color:var(--text-color);
     }
+    .btn-group, .btn-group .btn:focus, .btn-group button:focus, .btn-group .btn:active, .btn-group button:active{
+        outline:none!important;
+        border:none!important;
+        box-shadow: none!important;
+    }
+    .btn:focus, .btn:active {
+        outline:none!important;
+        border:none!important;
+        box-shadow: none!important;
+        
+    }
     .btn-primary{
         background-color: var(--highlight-color-darker);
+        border-color:transparent!important;
     }
     .btn-primary:hover{
         background-color: var(--highlight-color)!important;
