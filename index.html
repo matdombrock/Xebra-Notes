@@ -14,20 +14,38 @@
 
 <script src="https://kit.fontawesome.com/86459ed88a.js"></script>
 
-<div id="app">
+<div id="app" v-cloak>
 
     <nav class="navbar navbar-light bg-light">
         <span class="navbar-brand mb-0 h1"><!-- <img src="zebra-logo-cropped.png" class="mini-logo"> --> Xebra Notes</span>
-        <span class="navbar-text hover-icon" @click="newNote()">
+        
+        <span class="btn btn-primary new-note-btn" @click="newNote()">
             New Note &nbsp;<i class="fas fa-plus-circle"></i>
         </span>
+
+        <span class="navbar-text">
+            <div class="search-wrap">
+                <input type="text" v-model="state.searchQuery" @input="searchNotes()" placeholder="search query" class="custom-input-search">
+                <i v-if="state.searchQuery == '' || state.searchQuery == null " class="fas fa-search" style="color:var(--text-color)"></i>
+                <span v-if="state.searchQuery.length > 0" class="hover-icon" @click="clearSearch()">
+                        <i class="fas fa-times" style="color:var(--text-color)"></i>
+                </span>
+                &nbsp;
+            </div>
+        </span>
+
     </nav>
 
     <div class="mega-wrap">
         <div class="wrap">
-            <div class="cat-title">Misc <i class="fas fa-cogs" style="float:left"></i></div>
+            <div class="cat-title">
+                <span class="hover-icon" @click="newNote('misc')">
+                    Misc &nbsp;<i class="fas fa-plus-circle"></i>
+                <span>
+                <i class="fas fa-cogs" style="float:left"></i>
+            </div>
             <draggable v-model="notes.misc" group="people" @start="drag=true" @end="drag=false" class="drag-area" ghost-class="ghost">
-                <div v-for="element,index in notes.misc" :key="element.id" class="note">
+                <div v-for="element,index in filteredNotes.misc" :key="element.id" class="note">
                     <div class="note-title">
                         <span v-if="element.title">{{ element.title.length < 32 ? element.title : element.title.substring(0,32) + "..."}}</span>
                         <span v-else="element.title">...</span>
@@ -46,9 +64,14 @@
 
     
         <div class="wrap">
-            <div class="cat-title">Todo <i class="fas fa-clipboard-check" style="float:left"></i></div>
+            <div class="cat-title">
+                <span class="hover-icon" @click="newNote('todo')">
+                    Todo &nbsp;<i class="fas fa-plus-circle"></i>
+                <span>
+                <i class="fas fa-clipboard-check" style="float:left"></i>
+            </div>
             <draggable v-model="notes.todo" group="people" @start="drag=true" @end="drag=false" class="drag-area" ghost-class="ghost">
-                <div v-for="element,index in notes.todo" :key="element.id" class="note">
+                <div v-for="element,index in filteredNotes.todo" :key="element.id" class="note">
                     <div class="note-title">
                         <span v-if="element.title">{{ element.title.length < 36 ? element.title : element.title.substring(0,36) + "..."}}</span>
                         <span v-else="element.title">...</span>
@@ -66,9 +89,14 @@
         </div>
 
         <div class="wrap">
-            <div class="cat-title">Ideas <i class="fas fa-lightbulb" style="float:left"></i></div>
+            <div class="cat-title">
+                <span class="hover-icon" @click="newNote('ideas')">
+                    Ideas &nbsp;<i class="fas fa-plus-circle"></i>
+                <span>
+                <i class="fas fa-lightbulb" style="float:left"></i>
+            </div>
             <draggable v-model="notes.ideas" group="people" @start="drag=true" @end="drag=false" class="drag-area" ghost-class="ghost">
-                <div v-for="element,index in notes.ideas" :key="element.id" class="note">
+                <div v-for="element,index in filteredNotes.ideas" :key="element.id" class="note">
                     <div class="note-title">
                         <span v-if="element.title">{{ element.title.length < 36 ? element.title : element.title.substring(0,36) + "..."}}</span>
                         <span v-else="element.title">...</span>
@@ -239,13 +267,19 @@ applause in the lecture-room, [...]
                 },
             ],
         }, 
+        filteredNotes: {},
         drag: false, 
         state:{
             currentNote:{
                 category: "misc",
                 index:-1,
-            }
+            },
+            searchQuery:"",
         } 
+    },
+    async mounted(){
+        await this.searchNotes();
+        this.filteredNotes.misc.push();// hack to fix rendering issue 
     },
     methods:{
         deleteNote: function(category, index, auto){
@@ -259,10 +293,10 @@ applause in the lecture-room, [...]
                 // Do nothing!
             }   
         },
-        newNote: async function(){
+        newNote: async function(category="misc"){
             console.log("newnote");
             //
-            await this.notes.misc.unshift(
+            await this.notes[category].unshift(
                 {
                     title: "New Note",
                     content: "New Content",
@@ -270,7 +304,7 @@ applause in the lecture-room, [...]
                 }
             );
             this.state.currentNote.index = 0;
-            this.state.currentNote.category = "misc";
+            this.state.currentNote.category = category;
             this.modal = "newNote";
         },
         editNote: function(category,index){
@@ -305,6 +339,53 @@ applause in the lecture-room, [...]
             this.state.currentNote.category = category;
             this.state.currentNote.index = 0;
         },
+        searchNotes: function(){
+            console.log("SEARCH: "+this.state.searchQuery);
+            if(this.state.searchQuery == "" || this.state.searchQuery == null){
+                console.log("Empty Query");
+                this.filteredNotes.misc = this.notes.misc;
+                this.filteredNotes.todo = this.notes.todo;
+                this.filteredNotes.ideas = this.notes.ideas;
+                return;
+            }
+            var results = [];
+            
+            var miscResults = this.searchNoteCategory("misc");
+            var todoResults = this.searchNoteCategory("todo");
+            var ideasResults = this.searchNoteCategory("ideas");
+
+            this.filteredNotes.misc = miscResults;
+            this.filteredNotes.todo = todoResults;
+            this.filteredNotes.ideas = ideasResults;
+
+        },
+        searchNoteCategory: function(category){
+            //console.log("Searching: "+category);
+            var results = [];
+            var searchArray = this.state.searchQuery.split(" ");
+            //console.log("search array: "+searchArray);
+            this.notes[category].forEach(function(note){
+                var passed = false;
+                var noteString = note.title+" "+note.content+" "+note.link;
+                //console.log("note-string: "+noteString);
+                searchArray.forEach(function(searchWord){
+                    if(noteString.toLowerCase().includes(searchWord.toLowerCase())){
+                        passed = true;
+                        console.log(searchWord.toLowerCase());
+                        console.log("PASSED")
+                    }
+                });
+
+                if(passed==true){
+                    results.push(note)
+                }
+            });
+            return results;
+        },
+        clearSearch(){
+            this.state.searchQuery = "";
+            this.searchNotes();
+        },
         test: function(){
             alert();   
         }
@@ -324,6 +405,7 @@ applause in the lecture-room, [...]
         --mid-color:rgb(173, 173, 173);
         --brand-color:#5f5fa0;
         --text-color:rgb(70, 70, 70);
+        --warning-color:rgb(223, 171, 0);
     }
     body{
         background:var(--background-color);
@@ -367,7 +449,7 @@ applause in the lecture-room, [...]
         transition: all 0.2s;
     }
     .navbar .hover-icon:hover{
-        color:var(--mid-color)!important;
+        xcolor:var(--mid-color)!important;
     }
     .top-bar{
         min-height:5rem;
@@ -379,6 +461,15 @@ applause in the lecture-room, [...]
         border-top-left-radius: 0.25rem;
         border-top-right-radius: 0.25rem;
         border:1px solid var(--mid-color);
+    }
+    .new-note-btn{
+        position:fixed;
+        bottom:1rem;
+        right:1rem;
+        color:white!important;
+    }
+    .new-note-btn:hover{
+        color:white!important;
     }
     .ghost{
         
@@ -438,8 +529,14 @@ applause in the lecture-room, [...]
     }
     .drag-area{
         xborder:1px solid rgb(231, 0, 0);
-        height:calc(100vh - 6.15rem);
+        height:calc(100vh - 6.6rem);
         overflow-y:scroll;
+    }
+    @media only screen and (max-width: 600px) {
+        .drag-area{
+            height:auto;
+            overflow-y:visible;
+        }
     }
     .misc-wrap{
         
@@ -452,7 +549,10 @@ applause in the lecture-room, [...]
         transition: all 0.2s;
     }
     .hover-icon:hover{
-        color:var(--highlight-color);
+        color:var(--highlight-color)!important;
+    }
+    .hover-icon i:hover{
+        color:var(--highlight-color)!important;
     }
 
     .custom-modal-shade{
@@ -501,6 +601,16 @@ applause in the lecture-room, [...]
         width:90%;
         padding:0.5rem;
         font-size:1.5rem;
+    }
+    .search-wrap{
+        padding:0.25em;
+        border-radius:0.75em;
+        background:white;
+        width:195px;
+    }
+    .custom-input-search{
+        font-size:0.75em;
+        background:white;
     }
     textarea{
         height:25rem;
