@@ -1,0 +1,240 @@
+@import url('https://fonts.googleapis.com/css?family=Farro&display=swap');
+:root{
+    --highlight-color: rgb(236, 94, 0);
+    --highlight-color-darker: rgb(204, 82, 0);
+    --highlight-color-darker-yet: rgb(173, 70, 1);
+    --background-color: rgb(221, 221, 221);
+    --dark-color:rgb(212, 212, 212);
+    --mid-color:rgb(173, 173, 173);
+    --brand-color:#5f5fa0;
+    --text-color:rgb(70, 70, 70);
+    --warning-color:rgb(223, 171, 0);
+}
+body{
+    background:var(--background-color);
+    color:var(--text-color);
+    font-family: 'Farro', sans-serif;
+}
+a{
+    color:var(--text-color);
+}
+.btn-group, .btn-group .btn:focus, .btn-group button:focus, .btn-group .btn:active, .btn-group button:active{
+    outline:none!important;
+    border:none!important;
+    box-shadow: none!important;
+}
+.btn:focus, .btn:active {
+    outline:none!important;
+    border:none!important;
+    box-shadow: none!important;
+    
+}
+.btn-primary{
+    background-color: var(--highlight-color-darker);
+    border-color:transparent!important;
+}
+.btn-primary:hover{
+    background-color: var(--highlight-color)!important;
+}
+.btn-primary:active{
+    background-color: var(--highlight-color-darker-yet)!important;
+}
+.mini-logo{
+    max-height:1.5rem;
+    vertical-align: text-top;
+    border-radius: 100%;
+}
+.bg-light{
+    background-color:var(--brand-color)!important;
+}
+.navbar, .navbar-brand, .navbar-text{
+    color:white!important;
+    transition: all 0.2s;
+}
+.navbar .hover-icon:hover{
+    xcolor:var(--mid-color)!important;
+}
+.top-bar{
+    min-height:5rem;
+    background:rgb(192, 192, 192);
+}
+.note{
+    background: rgb(224, 224, 224);
+    margin:1rem;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    border:1px solid var(--mid-color);
+}
+.new-note-btn{
+    position:fixed;
+    bottom:1rem;
+    right:1rem;
+    color:white!important;
+}
+.new-note-btn:hover{
+    color:white!important;
+}
+.ghost{
+    
+    border:1px solid var(--highlight-color);
+    max-height:125px;
+    overflow: hidden;
+}
+.ghost .content{
+    
+}
+.ghost .note-title{
+    xbackground:red;
+    background:var(--highlight-color-darker);
+    color:white;
+}
+.note-title{
+    background:var(--dark-color);
+    padding:0.5rem;
+    min-height:1rem;
+    vertical-align: middle;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+.content{
+    padding:0.75rem;
+    white-space: pre-line;
+}
+.cat-title{
+    text-align: right;
+    background:var(--dark-color);
+    padding:0.4rem;
+    padding-left:1rem;
+    padding-right:1rem;
+}
+.mega-wrap{
+    margin:0 auto;
+    max-width:1450px;
+    text-align:center;
+}
+.wrap{
+    text-align:left;
+    max-width:32%;
+    min-width:32%;
+    margin:0 auto;
+    display:inline-block;
+    vertical-align: text-top;
+    border:1px solid var(--mid-color);
+    background:white;
+    
+}
+@media only screen and (max-width: 600px) {
+    .wrap{
+        max-width:100%;
+        min-width:100%;
+        display: block;
+    }
+}
+.drag-area{
+    xborder:1px solid rgb(231, 0, 0);
+    height:calc(100vh - 6.6rem);
+    overflow-y:scroll;
+}
+@media only screen and (max-width: 600px) {
+    .drag-area{
+        height:auto;
+        overflow-y:visible;
+    }
+}
+.misc-wrap{
+    
+}
+.todo-wrap{
+    
+}
+.hover-icon{
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.hover-icon:hover{
+    color:var(--highlight-color)!important;
+}
+.hover-icon i:hover{
+    color:var(--highlight-color)!important;
+}
+
+.custom-modal-shade{
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    background:rgba(0, 0, 0, 0.521);
+}
+.custom-modal{
+    position:absolute;
+    top:3rem;
+    left:0;
+    right:0;
+    max-width:650px;
+    min-height:25em;
+    overflow:scroll;
+    xbottom:25%;
+    background:rgb(228, 228, 228);
+    padding:1rem;
+    box-shadow: 0.5rem 0.5rem 0.5rem var(--mid-color);
+    margin-left:auto;
+    margin-right:auto;
+}
+
+input, textarea{
+    background:rgb(207, 207, 207);
+    background-color:rgb(207, 207, 207);
+    color:rgb(71, 71, 71);
+    border-color:rgba(0, 0, 0, 0);
+}
+input:focus, textarea:focus{
+    outline:none;
+}
+.custom-input-title{
+    width:85%;
+    font-size:2rem;
+    padding:0.5rem;
+}
+.custom-input-content{
+    width:100%;
+    padding:0.5rem;
+}
+.custom-input-link{
+    width:90%;
+    padding:0.5rem;
+    font-size:1.5rem;
+}
+.search-wrap{
+    padding:0.25em;
+    border-radius:0.75em;
+    background:white;
+    width:195px;
+}
+.custom-input-search{
+    font-size:0.75em;
+    background:white;
+}
+textarea{
+    height:25rem;
+    overflow-y:scroll;
+}
+/* width */
+::-webkit-scrollbar {
+width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+background: #f1f1f1; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background: #555; 
+}
