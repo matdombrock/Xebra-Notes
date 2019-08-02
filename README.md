@@ -1,5 +1,5 @@
 # Xebra Notes
-A simple note taking application. Like Google Keep but with some Kaban-like features.
+A simple note taking application. Similar to Google Keep but with some Kaban-like features.
 ![screenshot](https://i.imgur.com/xJf0thu.png)
 Depends on:
 * [VueJS](https://vuejs.org/)
