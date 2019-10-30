@@ -9,7 +9,7 @@ Depends on:
   
 (Resources are loaded externally)
 
-[DEMO ON GITHUB PAGES](http://mzero.space/Xebra-Notes/)
+[DEMO ON GITHUB PAGES](http://matdombrock.github.io/Xebra-Notes/)
 ## Installation
 Just clone the files to your web server and you should be good to go. 
 
