@@ -188,6 +188,7 @@ applause in the lecture-room, [...]
             this.state.currentNote.index = 0;
         },
         searchNotes: function(){
+            //depreciated
             console.log("SEARCH: "+this.state.searchQuery);
             if(this.state.searchQuery == "" || this.state.searchQuery == null){
                 console.log("Empty Query");
@@ -208,6 +209,7 @@ applause in the lecture-room, [...]
 
         },
         searchNoteCategory: function(category){
+            //depreciated
             //console.log("Searching: "+category);
             var results = [];
             var searchArray = this.state.searchQuery.split(" ");
@@ -230,7 +232,20 @@ applause in the lecture-room, [...]
             });
             return results;
         },
-        clearSearch(){
+        searchNote(note){
+            var searchArray = this.state.searchQuery.split(" ");
+            var noteString = note.title+" "+note.content+" "+note.link;
+            var passed = false;
+            searchArray.forEach(function(searchWord){
+                if(noteString.toLowerCase().includes(searchWord.toLowerCase())){
+                    passed = true;
+                    console.log(searchWord.toLowerCase());
+                    console.log("PASSED")
+                }
+            });
+            return passed;
+        },
+        clearSearch: function(){
             this.state.searchQuery = "";
             this.searchNotes();
         },
