@@ -44,7 +44,7 @@
                 <span>
                 <i class="fas fa-cogs" style="float:left"></i>
             </div>
-            <draggable v-model="notes.misc" group="people" @start="drag=true" @end="drag=false" class="drag-area" ghost-class="ghost">
+            <draggable v-model="notes.misc" group="people" @start="drag=true" @end="drag=false" class="drag-area" ghost-class="ghost" @change="saveNotes()">
                 <div v-for="element,index in notes.misc" :key="element.id" class="note" v-if="searchNote(element)">
                     <div class="note-title">
                         <span v-if="element.title">{{ element.title.length < 32 ? element.title : element.title.substring(0,32) + "..."}}</span>
@@ -70,7 +70,7 @@
                 <span>
                 <i class="fas fa-clipboard-check" style="float:left"></i>
             </div>
-            <draggable v-model="notes.todo" group="people" @start="drag=true" @end="drag=false" class="drag-area" ghost-class="ghost">
+            <draggable v-model="notes.todo" group="people" @start="drag=true" @end="drag=false" class="drag-area" ghost-class="ghost" @change="saveNotes()">
                 <div v-for="element,index in notes.todo" :key="element.id" class="note" v-if="searchNote(element)">
                     <div class="note-title">
                         <span v-if="element.title">{{ element.title.length < 36 ? element.title : element.title.substring(0,36) + "..."}}</span>
@@ -95,7 +95,7 @@
                 <span>
                 <i class="fas fa-lightbulb" style="float:left"></i>
             </div>
-            <draggable v-model="notes.ideas" group="people" @start="drag=true" @end="drag=false" class="drag-area" ghost-class="ghost">
+            <draggable v-model="notes.ideas" group="people" @start="drag=true" @end="drag=false" class="drag-area" ghost-class="ghost" @change="saveNotes()">
                 <div v-for="element,index in notes.ideas" :key="element.id" class="note" v-if="searchNote(element)">
                     <div class="note-title">
                         <span v-if="element.title">{{ element.title.length < 36 ? element.title : element.title.substring(0,36) + "..."}}</span>

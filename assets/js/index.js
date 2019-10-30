@@ -126,10 +126,25 @@ applause in the lecture-room, [...]
         } 
     },
     async mounted(){
+        await this.loadNotes();
         await this.searchNotes();
         this.filteredNotes.misc.push();// hack to fix rendering issue 
     },
     methods:{
+        saveNotes: function(){
+            console.log("Saving Notes...");
+            localStorage.setItem('notes',JSON.stringify(this.notes));
+            console.log('Saved Notes!');
+        },
+        loadNotes: function(){
+            var loadedNotes = localStorage.getItem('notes');
+            if(loadedNotes!=null){
+                this.notes = JSON.parse(loadedNotes);
+                console.log('Loaded Notes!');
+            }else{
+                console.log('No Notes To Load, Using Defaults!');
+            }
+        },
         deleteNote: function(category, index, auto){
             if(auto==true){
                 this.notes[category].splice(index,1);
@@ -163,6 +178,7 @@ applause in the lecture-room, [...]
         },
         closeModal: function(){
             this.modal = "";
+            this.saveNotes();
         },
         activateLink: function(){
             if(this.notes[this.state.currentNote.category][this.state.currentNote.index].link==null || this.notes[this.state.currentNote.category][this.state.currentNote.index].link=="")
@@ -186,6 +202,7 @@ applause in the lecture-room, [...]
             //assign new note as current note
             this.state.currentNote.category = category;
             this.state.currentNote.index = 0;
+            this.saveNotes();
         },
         searchNotes: function(){
             //depreciated
@@ -222,7 +239,7 @@ applause in the lecture-room, [...]
                     if(noteString.toLowerCase().includes(searchWord.toLowerCase())){
                         passed = true;
                         console.log(searchWord.toLowerCase());
-                        console.log("PASSED")
+                        //console.log("PASSED")
                     }
                 });
 
@@ -233,14 +250,19 @@ applause in the lecture-room, [...]
             return results;
         },
         searchNote(note){
+            //the real search function
+            //searches each note locally instead of in a group
             var searchArray = this.state.searchQuery.split(" ");
             var noteString = note.title+" "+note.content+" "+note.link;
             var passed = false;
             searchArray.forEach(function(searchWord){
                 if(noteString.toLowerCase().includes(searchWord.toLowerCase())){
                     passed = true;
-                    console.log(searchWord.toLowerCase());
-                    console.log("PASSED")
+                    if(searchWord != ''){
+                        console.log(searchWord.toLowerCase());
+                    }
+                    
+                    //console.log("PASSED")
                 }
             });
             return passed;
