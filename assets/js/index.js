@@ -9,11 +9,33 @@ var app = new Vue({
                     content: "You can edit these notes, delete, them or create new notes."
                 },
                 {
+                    title: "New Note",
+                    content: "You can either click the 'New Note +' button on the bottom right of the page or click a category name to add a new note to that category."
+                },
+                {
+                    title: "Drag & Drop",
+                    content: "You can drag and drop notes between categories."
+                },
+                {
+                    title: "Searching",
+                    content: "You can filter your notes with the search box in the top right."
+                },
+                {
+                    title: "Saving",
+                    content: "Your notes will automatically save to your browser's local storage."
+                },
+                {
+                    title: "Links",
+                    content: "Notes can have links assigned to them. This is useful for storing bookmarks to sites. Try clicking the link icon on the top of this note.",
+                    link:"https://matdombrock.com"
+                },
+                {
                     title: "To Foreign Lands",
                     content: `I heard that you ask’d for something to prove this puzzle the New World,
 And to define America, her athletic Democracy,
 Therefore I send you my poems that you behold in them what you wanted.
                     `,
+                    link: "https://whitmanarchive.org/published/LG/1881/poems/5"
                 },
                 {
                     title: "Song To Myself",
@@ -37,6 +59,7 @@ Retiring back a while sufficed at what they are, but never forgotten,
 I harbor for good or bad, I permit to speak at every hazard,
 Nature without check with original energy.
                     `,
+                    link:"https://www.poetryfoundation.org/poems/45477/song-of-myself-1892-version"
                 },
                 {
                     xtitle: "note 3",
@@ -52,16 +75,13 @@ applause in the lecture-room, [...]
                 {
                     title: "Defeat Bowser",
                     content: "He's ran off with Peach again. It's the third time this week!",
+                    link:"https://nintendo.com"
                 },
                 {
                     title: "Groceries",
                     content: `-Bananas
                     -Kool-Aid
                     -Bread`,
-                },
-                {
-                    title: "Add Persistent Data!",
-                    content: "Saving to local storage and an actual database needs to be implemented.",
                 },
                 {
                     title: "Change Category Names",
@@ -86,32 +106,12 @@ applause in the lecture-room, [...]
             ],
             ideas: [
                 {
-                    title: "Happy Birthday?",
-                    content: "Everyone hates being sung happy birthday, and everyone hates singing happy birthday, so what are we doing here.",
-                },
-                {
-                    title: "Cold Babies",
-                    content: "11 babies have been born in Antarctica, and none of them died as infants, meaning Antarctica has the lowest infant mortality rate at 0%",
-                },
-                {
                     title: "Street View",
                     content: 'Somebody at google was just like "yea, just have someone drive down every road on earth".',
                 },
                 {
                     title: "Lemonade?",
                     content: 'Apparently, a lemon is not naturally occurring and is a hybrid developed by cross breeding a bitter orange and a citron. Life never gave us lemons; we invented them all by ourselves.',
-                },
-                {
-                    title: "Trends",
-                    content: 'It kinda makes sense that the target audience for fidget spinners lost interest in them so quickly',
-                },
-                {
-                    title: "Is this safe?",
-                    content: 'Coffee makes you hyper, but coffee shops are designed for people to chill, whereas alcohol is a depressant but bars and clubs are designed for people to be energetic.',
-                },
-                {
-                    title: "Math",
-                    content: "Since there are 3600 seconds in an hour, and most people make less than $36.00/hr, their time is worth less than a penny per second. It's literally worth your time to pick up a penny from the ground.",
                 },
             ],
         }, 
