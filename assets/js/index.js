@@ -83,26 +83,6 @@ applause in the lecture-room, [...]
                     -Kool-Aid
                     -Bread`,
                 },
-                {
-                    title: "Change Category Names",
-                    content: "It would be useful if the category names could easily be changed.",
-                },
-                {
-                    title: "Click Category Names To Create New Note",
-                    content: "It would be useful if the category names could be clicked to create a new note in that category.",
-                },
-                {
-                    title: "Add option for links.",
-                    content: "Notes should have an option to include a URL.",
-                },
-                {
-                    title: "Change note category.",
-                    content: "When editing/creating a note it should be possible to change it's category from the edit screen.",
-                },
-                {
-                    title: "Search.",
-                    content: "Add a simple search filter feature.",
-                },
             ],
             ideas: [
                 {
